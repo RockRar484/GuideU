@@ -1,12 +1,13 @@
 'use client'
-
+import { getToken } from '@/app/auth/auth'
 import {useState,useEffect} from 'react'
 import { ModeToggle } from './toggleTheme'
+import AuthDailog from './AuthDailog'
 const Navbar = () => {
     const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = getToken();
     if (storedToken) {
       setToken(storedToken);
     }
@@ -65,14 +66,9 @@ const Navbar = () => {
                         :
                         
                         (
-                          <div class="w-full space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
-                              <button  class="relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full focus:before:bg-primary/10 dark:focus:before:bg-primaryLight/10 before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
-                                  <span class="relative text-sm font-semibold text-primary dark:text-primaryLight">Sign Up</span>                    
-                              </button>
-                              <button  class="relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
-                                  <span class="relative text-sm font-semibold text-white dark:text-gray-900">Login</span>                    
-                              </button>
-                          </div>
+                            
+                                <AuthDailog/>
+                
                         )
                     }
                       </div>
