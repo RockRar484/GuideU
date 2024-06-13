@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 # import sqlite3
 from .models import josaa2023, josaa2022, josaa2021, josaa2020, josaa2019, josaa2018, josaa2017, josaa2016
+from django.apps import apps
 
 
 from selenium.webdriver.support.ui import Select
@@ -48,7 +49,7 @@ def admin_only_view(request):
 
     # Navigate to the website
     for i in range(1, 9):
-        # dbname = 'josaa'
+        # ModelClass = 'josaa'
         year ='select'
         if i==1:
             year = '2023'
@@ -68,7 +69,7 @@ def admin_only_view(request):
         elif i==6:
             year = '2018'    
             ModelClass = josaa2018
-        elif i==7:
+        elif i==7: 
             year = '2017'    
             ModelClass = josaa2017
         elif i==8:
@@ -246,10 +247,59 @@ class LoginView(APIView):
             return Response({'error': 'Invalid password'}, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
             return Response({'error': 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class CRLAvailInstiView(APIView):
+    def get(self, request):
+        user_id = get_user_from_token(request)
+        if isinstance(user_id, Response):  
+            return user_id
+        year = request.query_params.get('year')
+        crl = request.query_params.get('crl')
+        branch = request.query_params.get('branch')
+        ModelClass = apps.get_model('users', 'josaa' + str(year))
+        try:
+            if branch=='All':
+                results = ModelClass.objects.filter(close_rank__gte=crl).order_by('open_rank')
+            else :
+                results = ModelClass.objects.filter(close_rank__gte=crl, academic_program = branch).order_by('open_rank')
+            results_data = list(results.values())
+            if len(results_data)==0:
+                return Response({'message': 'Sorry no institutes are available for this rank and branch.'}, status=404)
+            return JsonResponse(results_data, safe=False)
+            
+        except ModelClass.DoesNotExist:
+            return Response({'error': 'Sorry no institutes are available for this rank and branch.'}, status=404)
+        except Exception as e:
+            return HttpResponse(f'An error occurred: {e}', status=500)
+        
+class CatAvailInstiView(APIView):
+    def get(self, request):
+        user_id = get_user_from_token(request)
+        if isinstance(user_id, Response):  
+            return user_id
+        year = request.query_params.get('year')
+        category = request.query_params.get('category')
+        cat_rank = request.query_params.get('category_rank')
+        branch = request.query_params.get('branch')
+        ModelClass = apps.get_model('users', 'josaa' + str(year))
+        try:
+            if branch=='All':
+                results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category).order_by('open_rank')
+            else :
+                results = ModelClass.objects.filter(close_rank__gte=cat_rank, academic_program = branch, seat_type=category).order_by('open_rank')
+            results_data = list(results.values())
+            if len(results_data)==0:
+                return Response({'message': 'Sorry no institutes are available for this rank and branch.'}, status=404)
+            return JsonResponse(results_data, safe=False)
+            
+        except ModelClass.DoesNotExist:
+            return Response({'error': 'Sorry no institutes are available for this rank and branch.'}, status=404)
+        except Exception as e:
+            return HttpResponse(f'An error occurred: {e}', status=500)
 
 class NewsView(APIView):
     def get(self, request):
-        user_id = get_user_from_token(request)
+        # user_id = get_user_from_token(request)
         # email = request.data.get('email')
         # password = request.data.get('password')
         url = 'https://www.google.com/search?q=josaa&tbm=nws'
