@@ -17,6 +17,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { login } from './auth'
+import axios from 'axios'
 
 const AuthView = ({mode}) => {
     const [Password, setPassword] = useState('')
@@ -24,7 +25,34 @@ const AuthView = ({mode}) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
     
-
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        try {
+          await login(username, password);
+          router.push('/'); // Redirect to home page after successful login
+        } catch (err) {
+          setError(err.message);
+        }
+        setEmail('')
+        setPassword('')
+        setConfirmPassword('')
+    }
+    const handleSignUp = async (e) => {
+        if(confirmPassword === Password){
+            try {
+                const response = await axios.post('http://127.0.0.1:8000/api/signup/', {
+                    email: email,
+                    password: Password
+                })
+            } catch (error) {
+                setMessage(error.response.data.email)
+            }
+        }
+        setEmail('')
+        setPassword('')
+        setConfirmPassword('')
+    
+    }
   return (
     <>
         <Tabs defaultValue={mode} className="w-[350px] m-auto">
@@ -39,16 +67,16 @@ const AuthView = ({mode}) => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" />
+                    <Label htmlFor="name">Email</Label>
+                    <Input id="name" onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="space-y-1">
                     <Label htmlFor="username">Password</Label>
-                    <Input id="password"  />
+                    <Input id="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button>Sign In</Button>
+                    <Button onClick={handleSignIn}>Sign In</Button>
                 </CardFooter>
                 </Card>
             </TabsContent>
@@ -61,19 +89,20 @@ const AuthView = ({mode}) => {
                 <CardContent className="space-y-2">
                     <div className="space-y-1">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email"  />
+                    <Input id="email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="space-y-1">
                     <Label htmlFor="new">Password</Label>
-                    <Input id="new" type="password" />
+                    <Input id="new" type="password" onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <div className="space-y-1">
                     <Label htmlFor="confirm">Confirm Password</Label>
-                    <Input id="confirm" type="password" />
+                    <Input id="confirm" type="password" onChange={(e) => setConfirmPassword(e.target.value)}/>
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button>Sign Up</Button>
+                    <Button onClick={handleSignUp} >Sign Up</Button>
+                    <p className="text-red-500 space-y-1 ">{message}</p>
                 </CardFooter>
                 </Card>
             </TabsContent>
