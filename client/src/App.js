@@ -1,21 +1,21 @@
 import React from 'react';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <Router>
       <div>
-        {/* Define your routes inside the Switch component */}
-        <Switch>
+        {/* Define your routes inside the Routes component */}
+        <Routes>
           {/* Define each route using the Route component */}
-          <Route exact path="/" component={Home} />
+          {/* <Route exact path="/" component={Home} /> */}
           <Route path="/login" component={Login} />
-          <Route path="/Signup" component={Signup} />
+          <Route exact path="/signup" element={<Signup />} />
           {/* Define a catch-all route for paths that don't match */}
-          <Route component={NotFound} />
-        </Switch>
+          {/* <Route component={NotFound} /> */}
+        </Routes>
       </div>
     </Router>
 
