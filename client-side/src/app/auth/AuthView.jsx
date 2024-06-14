@@ -16,27 +16,26 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { login } from './auth'
+import { useAuth } from '@/context/AuthContext'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 const AuthView = ({mode}) => {
     const [Password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
+    const router = useRouter()
+    const { login } = useAuth()
     
-    const handleSignIn = async (e) => {
-        e.preventDefault();
+    const handleSignIn = async () => {
         try {
-          await login(username, password);
-          router.push('/'); // Redirect to home page after successful login
-        } catch (err) {
-          setError(err.message);
+          await login(email, Password)
+          setMessage('Logged in successfully')
+        } catch (error) {
+          setMessage(error.message)
         }
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
-    }
+      }
     const handleSignUp = async (e) => {
         if(confirmPassword === Password){
             try {
@@ -44,6 +43,8 @@ const AuthView = ({mode}) => {
                     email: email,
                     password: Password
                 })
+                setMessage("User Registered Successfully")
+                mode="sign_in"
             } catch (error) {
                 setMessage(error.response.data.email)
             }
@@ -67,12 +68,12 @@ const AuthView = ({mode}) => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <div className="space-y-1">
-                    <Label htmlFor="name">Email</Label>
-                    <Input id="name" onChange={(e) => setEmail(e.target.value)}/>
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" onChange={(e) => setEmail(e.target.value)}/>
                     </div>
                     <div className="space-y-1">
-                    <Label htmlFor="username">Password</Label>
-                    <Input id="password" onChange={(e) => setPassword(e.target.value)} />
+                    <Label htmlFor="password">Password</Label>
+                    <Input id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </CardContent>
                 <CardFooter>

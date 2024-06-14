@@ -1,17 +1,23 @@
 'use client'
-import { getToken } from '@/app/auth/auth'
 import {useState,useEffect} from 'react'
 import { ModeToggle } from './toggleTheme'
 import AuthDailog from './AuthDailog'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/context/AuthContext'
 const Navbar = () => {
     const [token, setToken] = useState(null);
-
+    const router = useRouter();
+    const { isLoggedIn, logout, getToken } = useAuth();
   useEffect(() => {
     const storedToken = getToken();
     if (storedToken) {
       setToken(storedToken);
     }
   }, []);
+  const handleLogOut = () => {
+    logout();
+    router.push('/');
+  };
   return (
     <>
         <header>
@@ -38,14 +44,14 @@ const Navbar = () => {
                           <div class="text-gray-600 dark:text-gray-300 lg:pr-4">
                               <ul class="space-y-6 tracking-wide font-medium text-base lg:text-sm lg:flex lg:space-y-0">
                                   <li>
-                                      <a href="#" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                      <div onClick={() => router.push('/home')} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
                                           <span>Home</span>
-                                      </a>
+                                      </div>
                                   </li>
                                   <li>
-                                      <a href="#" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                      <div onClick={() => router.push('/news')} class="block md:px-4 transition duration-200 hover:text-primary hover:cursor-pointer hover:dark:hover:text-primaryLight">
                                           <span>News</span>
-                                      </a>
+                                      </div>
                                   </li>
                                   <li>
                                       <a href="#" class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
@@ -54,10 +60,10 @@ const Navbar = () => {
                                   </li>
                               </ul>
                           </div>
-                        { token ? 
+                        { isLoggedIn ? 
                             (
-                                <div class="w-full space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
-                                <button  class="relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
+                                <div class="w-full pl-3 space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
+                                <button onClick={handleLogOut} class="relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
                                     <span class="relative text-sm font-semibold text-white dark:text-gray-900">Logout</span>                    
                                 </button>
                                 </div>

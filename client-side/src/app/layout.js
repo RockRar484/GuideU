@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
       <html lang="en" suppressHydrationWarning>
         <head />
         <body>
-          
+          <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -26,7 +27,7 @@ export default function RootLayout({ children }) {
             <Navbar/>
             {children}
           </ThemeProvider>
-          
+          </AuthProvider>
         </body>
       </html>
     </>
