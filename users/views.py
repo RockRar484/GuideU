@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 # import sqlite3
 from .models import josaa2023, josaa2022, josaa2021, josaa2020, josaa2019, josaa2018, josaa2017, josaa2016
+from django.db.models import Avg
 from django.apps import apps
 
 
@@ -297,6 +298,22 @@ class CatAvailInstiView(APIView):
         except Exception as e:
             return HttpResponse(f'An error occurred: {e}', status=500)
 
+class TopBranchesYearWise(APIView):
+    def get(self, request):
+        year = request.query_params.get('year')
+        ModelClass = apps.get_model('users', 'josaa' + str(year))
+        try:
+            results = josaa2023.objects.filter(
+            seat_type='OPEN', gender='Gender-Neutral'
+            ).values("academic_program").annotate(avg_opening_rank=Avg('open_rank')
+            ).order_by('avg_opening_rank'
+            )
+            results3 = results.values('academic_program', 'avg_opening_rank')
+            results_data = list(results3.values())
+            return JsonResponse(results_data, safe=False)
+        except Exception as e:
+            return HttpResponse(f'An error occurred: {e}', status=500)
+        
 class NewsView(APIView):
     def get(self, request):
         # user_id = get_user_from_token(request)
