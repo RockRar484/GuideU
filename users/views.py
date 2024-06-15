@@ -15,7 +15,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 # import sqlite3
 from .models import josaa2023, josaa2022, josaa2021, josaa2020, josaa2019, josaa2018, josaa2017, josaa2016
-from django.db.models import Avg
+from django.db.models import Avg, F, IntegerField, ExpressionWrapper, FloatField
+from django.db.models.functions import Cast
 from django.apps import apps
 
 
@@ -260,9 +261,9 @@ class CRLAvailInstiView(APIView):
         ModelClass = apps.get_model('users', 'josaa' + str(year))
         try:
             if branch=='All':
-                results = ModelClass.objects.filter(close_rank__gte=crl).order_by('open_rank')
+                results = ModelClass.objects.filter(close_rank__gte=crl, seat_type='OPEN').order_by('open_rank')
             else :
-                results = ModelClass.objects.filter(close_rank__gte=crl, academic_program = branch).order_by('open_rank')
+                results = ModelClass.objects.filter(close_rank__gte=crl, academic_program = branch, seat_type='OPEN').order_by('open_rank')
             results_data = list(results.values())
             if len(results_data)==0:
                 return Response({'message': 'Sorry no institutes are available for this rank and branch.'}, status=404)
@@ -284,10 +285,17 @@ class CatAvailInstiView(APIView):
         branch = request.query_params.get('branch')
         ModelClass = apps.get_model('users', 'josaa' + str(year))
         try:
-            if branch=='All':
-                results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category).order_by('open_rank')
+            if branch=='ALL':
+                if category== 'ALL':
+                    results = ModelClass.objects.filter(close_rank__gte=cat_rank).order_by('open_rank')
+                else :
+                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category).order_by('open_rank')
+                
             else :
-                results = ModelClass.objects.filter(close_rank__gte=cat_rank, academic_program = branch, seat_type=category).order_by('open_rank')
+                if category== 'ALL':
+                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, academic_program=branch).order_by('open_rank')
+                else :
+                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category, academic_program = branch).order_by('open_rank')
             results_data = list(results.values())
             if len(results_data)==0:
                 return Response({'message': 'Sorry no institutes are available for this rank and branch.'}, status=404)
@@ -303,16 +311,47 @@ class TopBranchesYearWise(APIView):
         year = request.query_params.get('year')
         ModelClass = apps.get_model('users', 'josaa' + str(year))
         try:
-            results = josaa2023.objects.filter(
+            results = ModelClass.objects.filter(
             seat_type='OPEN', gender='Gender-Neutral'
-            ).values("academic_program").annotate(avg_opening_rank=Avg('open_rank')
-            ).order_by('avg_opening_rank'
-            )
-            results3 = results.values('academic_program', 'avg_opening_rank')
-            results_data = list(results3.values())
+            ).values("academic_program").annotate(
+                open_rank_int=Cast('open_rank', FloatField()),
+                close_rank_int=Cast('close_rank', FloatField())
+            ).annotate(
+                avg_rank=Avg(ExpressionWrapper((F('open_rank_int') + F('close_rank_int')) / 2, output_field=FloatField()))
+            ).order_by('avg_rank')
+            results3 = results.values('academic_program')
+            results_data = list(results3)
             return JsonResponse(results_data, safe=False)
         except Exception as e:
             return HttpResponse(f'An error occurred: {e}', status=500)
+
+class TopPicksYearWise(APIView):
+    def get(self, request):
+        year = request.query_params.get('year')
+        ModelClass = apps.get_model('users', 'josaa' + str(year))
+        try:
+            results = ModelClass.objects.filter(
+            seat_type='OPEN', gender='Gender-Neutral'
+            ).values("academic_program").annotate(
+                open_rank_int=Cast('open_rank', FloatField()),
+                close_rank_int=Cast('close_rank', FloatField())
+            ).annotate(
+                avg_rank=Avg(ExpressionWrapper((F('open_rank_int') + F('close_rank_int')) / 2, output_field=FloatField()))
+            ).order_by('avg_rank')
+            results3 = results.values('academic_program', 'avg_rank', 'institute name')
+            results_data = list(results3)
+            return JsonResponse(results_data, safe=False)
+        except Exception as e:
+            return HttpResponse(f'An error occurred: {e}', status=500)
+
+class Branches(APIView):
+    def get(self, request):
+        try:
+            result = josaa2023.objects.values('academic_program').distinct()
+            results_data = list(result)
+            return JsonResponse(results_data, safe=False)
+        except Exception as e:
+            return HttpResponse(f'An error occured: {e}', status=500)
         
 class NewsView(APIView):
     def get(self, request):
