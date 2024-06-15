@@ -101,9 +101,9 @@ const Navbar = () => {
                                         Yearly Trend
                                       </DropdownMenuItem>
                                       <DropdownMenuItem
-                                        onClick={() => router.push('/topbranch')}
+                                        onClick={() => router.push('/topbranches')}
                                       >
-                                        Top Branches
+                                        Top Branches   
                                       </DropdownMenuItem>
                                       <DropdownMenuSeparator />
                                     </DropdownMenuContent>
