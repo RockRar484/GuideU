@@ -66,9 +66,15 @@ const categories = [
   },
 ]
 
-export function CategoryBox() {
+export function CategoryBox({ onSelect }) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+
+  const handleSelect = (currentValue) => {
+    setValue(currentValue === value ? "" : currentValue)
+    onSelect(currentValue)
+    setOpen(false)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -80,7 +86,7 @@ export function CategoryBox() {
           className="w-[200px] justify-between"
         >
           {value
-            ? categories.find((framework) => framework.value === value)?.label
+            ? categories.find((category) => category.value === value)?.label
             : "Category..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -91,22 +97,18 @@ export function CategoryBox() {
           <CommandList>
             <CommandEmpty>No Category found.</CommandEmpty>
             <CommandGroup>
-              {categories.map((framework) => (
+              {categories.map((category) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
+                  key={category.value}
+                  onSelect={() => handleSelect(category.value)}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === category.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  {category.label}
                 </CommandItem>
               ))}
             </CommandGroup>

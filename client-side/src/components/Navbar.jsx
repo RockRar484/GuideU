@@ -44,10 +44,18 @@ const Navbar = () => {
                           <div class="text-gray-600 dark:text-gray-300 lg:pr-4">
                               <ul class="space-y-6 tracking-wide font-medium text-base lg:text-sm lg:flex lg:space-y-0">
                                   <li>
-                                      <div onClick={() => router.push('/home')} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                      <div onClick={() => router.push('/')} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
                                           <span>Home</span>
                                       </div>
                                   </li>
+                                  {isLoggedIn ? (
+                                    <li>
+                                        <div onClick={() => router.push('/colleges')} class="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                            <span>Colleges Analysis</span>
+                                        </div>
+                                    </li>
+                                      
+                                  ): null }
                                   <li>
                                       <div onClick={() => router.push('/news')} class="block md:px-4 transition duration-200 hover:text-primary hover:cursor-pointer hover:dark:hover:text-primaryLight">
                                           <span>News</span>

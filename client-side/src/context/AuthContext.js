@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email,password) => {
     try{
         const response= await axios.post('http://localhost:8000/api/login/', { "email": email, "password":password });
-        const token = "Bearer "+response.data.token 
+        const token = response.data.token 
         router.push('/home');
         localStorage.setItem('token', token);
         setIsLoggedIn(true);

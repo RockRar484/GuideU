@@ -276,7 +276,7 @@ export function ProgramBox({ onSelect }) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between"
+          className="w-[300px] justify-between overflow-auto"
         >
           {value
             ? programs.find((program) => program.academic_program === value)?.academic_program
