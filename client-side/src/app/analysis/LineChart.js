@@ -17,9 +17,6 @@ const LineChart = ({ institute, category, branch }) => {
             category:category,
             branch: branch,
           },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         });
 
         console.log('API response:', response.data);
@@ -90,7 +87,7 @@ const LineChart = ({ institute, category, branch }) => {
     };
   }, [chartData]);
 
-  return <canvas ref={chartRef} />;
+  return <canvas ref={chartRef} className='p-3 lg:p-20 md:p-10 sm:p-3' />;
 };
 
 export default LineChart;

@@ -37,10 +37,10 @@ const Home = () => {
 
   return (
     <>
-      <div className='max-w-7xl m-auto p-20 lg:p-30 md:p-20 sm:p-10 '>
-        <Card className="w-full p-30 border-1 m-auto">
-          <CardTitle className="text-2xl text-left mb-10">Get Colleges for Your Rank</CardTitle>
-          <CardContent className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 space-y-2">
+      <div className='max-w-7xl m-auto border-b-[2px] p-20 lg:px-30 md:px-20 sm:px-10 '>
+        <div className="w-full p-30 m-auto">
+          <h1 className="text-2xl text-left mb-10 font-bold">Get Colleges for Your Rank</h1>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 items-center justify-center">
             <div className="space-y-1">
             <YearBox onSelect={handleYearSelect} />
             </div>
@@ -57,10 +57,10 @@ const Home = () => {
                 onChange={handleRankChange}
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
-      <div className="p-5 lg:p-30 md:p-20 sm:p-5">
+      <div className="px-5 lg:px-30 md:px-20 sm:px-5 py-5">
       <DataTableDemo
         year={selectedYear}
         branch={selectedProgram}

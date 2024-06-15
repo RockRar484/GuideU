@@ -20,29 +20,78 @@ import {
 } from "@/components/ui/popover"
 
 const institutes = [
-  { "institute": "Indian Institute of Technology Madras" },
-  { "institute": "Indian Institute of Technology Hyderabad" },
-  { "institute": "Indian Institute of Technology Palakkad" },
-  { "institute": "Indian Institute of Technology Tirupati" },
-  { "institute": "Indian Institute of Technology Bombay" },
-  { "institute": "Indian Institute of Technology Dharwad" },
-  { "institute": "Indian Institute of Technology Gandhinagar" },
-  { "institute": "Indian Institute of Technology Delhi" },
-  { "institute": "Indian Institute of Technology Jammu" },
-  { "institute": "Indian Institute of Technology Goa" },
-  { "institute": "Indian Institute of Technology Jodhpur" },
-  { "institute": "Indian Institute of Technology Guwahati " },
-  { "institute": "Indian Institute of Technology Patna" },
-  { "institute": "Indian Institute of Technology Kanpur" },
-  { "institute": "Indian Institute of Technology (BHU), Varanasi" },
-  { "institute": "Indian Institute of Technology Indore" },
-  { "institute": "Indian Institute of Technology Kharagpur" },
-  { "institute": "Indian Institute of Technology Bhubaneswar" },
-  { "institute": "Indian Institute of Technology (ISM), Dhanbad" },
-  { "institute": "Indian Institute of Technology Bhilai" },
-  { "institute": "Indian Institute of Technology Roorkee" },
-  { "institute": "Indian Institute of Technology Mandi" },
-  { "institute": "Indian Institute of Technology Ropar" },
+    {
+        "institute": "Indian Institute  of Technology Bhubaneswar"
+    },
+    {
+        "institute": "Indian Institute  of Technology Bombay"
+    },
+    {
+        "institute": "Indian Institute  of Technology Mandi"
+    },
+    {
+        "institute": "Indian Institute  of Technology Delhi"
+    },
+    {
+        "institute": "Indian Institute  of Technology Indore"
+    },
+    {
+        "institute": "Indian Institute  of Technology Kharagpur"
+    },
+    {
+        "institute": "Indian Institute  of Technology Hyderabad"
+    },
+    {
+        "institute": "Indian Institute  of Technology Jodhpur"
+    },
+    {
+        "institute": "Indian Institute  of Technology Kanpur"
+    },
+    {
+        "institute": "Indian Institute  of Technology Madras"
+    },
+    {
+        "institute": "Indian Institute  of Technology Gandhinagar"
+    },
+    {
+        "institute": "Indian Institute  of Technology Patna"
+    },
+    {
+        "institute": "Indian Institute  of Technology Roorkee"
+    },
+    {
+        "institute": "Indian Institute  of Technology (ISM) Dhanbad"
+    },
+    {
+        "institute": "Indian Institute  of Technology Ropar"
+    },
+    {
+        "institute": "Indian Institute  of Technology (BHU) Varanasi"
+    },
+    {
+        "institute": "Indian Institute  of Technology Guwahati"
+    },
+    {
+        "institute": "Indian Institute of Technology Bhilai"
+    },
+    {
+        "institute": "Indian Institute of Technology Goa"
+    },
+    {
+        "institute": "Indian Institute  of Technology Palakkad"
+    },
+    {
+        "institute": "Indian Institute  of Technology Tirupati"
+    },
+    {
+        "institute": "Indian Institute of Technology Jammu"
+    },
+    {
+        "institute": "Indian Institute of Technology Dharwad"
+    },
+    {
+        "institute": ""
+    }
 ]
 
 export function InstituteBox({ onSelect }) {

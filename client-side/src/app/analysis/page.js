@@ -11,8 +11,6 @@ const Home = () => {
   const [selectedInstitute, setSelectedInstitute] = useState("");
   const [selectedProgram, setSelectedProgram] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [rank, setRank] = useState("");
-
   const handleProgramSelect = (program) => {
     setSelectedProgram(program);
     console.log("Selected Program:", program);
@@ -30,10 +28,10 @@ const Home = () => {
 
   return (
     <>
-      <div className='max-w-7xl m-auto p-20 lg:p-30 md:p-20 sm:p-10 '>
-        <Card className="w-full p-30 border-1 m-auto">
-          <CardTitle className="text-2xl text-left mb-10">Get Colleges for Your Rank</CardTitle>
-          <CardContent className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 space-y-2">
+      <div className='max-w-7xl border-b-[2px] m-auto p-20 lg:px-30 md:px-20 sm:px-10'>
+        <div className="w-full p-30 border-1 m-auto">
+          <h1 className="text-2xl text-left mb-10 font-bold">Yearly Trends of Ranks</h1>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             <div className="space-y-1">
               <ProgramBox onSelect={handleProgramSelect} />
             </div>
@@ -43,10 +41,10 @@ const Home = () => {
             <div className="space-y-1">
               <InstituteBox onSelect={handleInstituteSelect} />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
-      <div className="p-5 lg:p-30 md:p-20 sm:p-5">
+      <div className="">
         <LineChart
           branch={selectedProgram}
           category={selectedCategory}
