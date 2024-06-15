@@ -285,17 +285,36 @@ class CatAvailInstiView(APIView):
         branch = request.query_params.get('branch')
         ModelClass = apps.get_model('users', 'josaa' + str(year))
         try:
-            if branch=='ALL':
-                if category== 'ALL':
-                    results = ModelClass.objects.filter(close_rank__gte=cat_rank).order_by('open_rank')
-                else :
-                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category).order_by('open_rank')
-                
-            else :
-                if category== 'ALL':
-                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, academic_program=branch).order_by('open_rank')
-                else :
-                    results = ModelClass.objects.filter(close_rank__gte=cat_rank, seat_type=category, academic_program = branch).order_by('open_rank')
+            if branch == 'ALL':
+                if category == 'ALL':
+                    results = ModelClass.objects.annotate(
+                        close_rank_int=Cast('close_rank', IntegerField())
+                    ).filter(
+                        close_rank_int__gte=cat_rank
+                    ).order_by('open_rank')
+                else:
+                    results = ModelClass.objects.annotate(
+                        close_rank_int=Cast('close_rank', IntegerField())
+                    ).filter(
+                        close_rank_int__gte=cat_rank,
+                        seat_type=category
+                    ).order_by('open_rank')
+            else:
+                if category == 'ALL':
+                    results = ModelClass.objects.annotate(
+                        close_rank_int=Cast('close_rank', IntegerField())
+                    ).filter(
+                        close_rank_int__gte=cat_rank,
+                        academic_program=branch
+                    ).order_by('open_rank')
+                else:
+                    results = ModelClass.objects.annotate(
+                        close_rank_int=Cast('close_rank', IntegerField())
+                    ).filter(
+                        close_rank_int__gte=cat_rank,
+                        seat_type=category,
+                        academic_program=branch
+                    ).order_by('open_rank')
             results_data = list(results.values())
             if len(results_data)==0:
                 return Response({'message': 'Sorry no institutes are available for this rank and branch.'}, status=404)
