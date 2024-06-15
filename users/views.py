@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 # import sqlite3
 from .models import josaa2023, josaa2022, josaa2021, josaa2020, josaa2019, josaa2018, josaa2017, josaa2016
-from django.db.models import Avg, F, IntegerField, ExpressionWrapper, FloatField
+from django.db.models import Avg, F, IntegerField, ExpressionWrapper, FloatField, Count
 from django.db.models.functions import Cast
 from django.apps import apps
 
@@ -324,22 +324,61 @@ class CatAvailInstiView(APIView):
             return Response({'error': 'Sorry no institutes are available for this rank and branch.'}, status=404)
         except Exception as e:
             return HttpResponse(f'An error occurred: {e}', status=500)
+        
+class YearlyTrend(APIView):
+    def get(self, request):
+
+        institute = request.query_params.get('institute')
+        category = request.query_params.get('category')     
+        branch = request.query_params.get('branch')
+        # gender = request.query_params.get('gender')
+        yearly_trends = []
+        try:
+            for i in range(2016, 2024):
+                ModelClass = apps.get_model('users', 'josaa' + str(i))
+                if i==2016 or i==2017:
+                    gender = 'NA'
+                else:
+                    gender = 'Gender-Neutral'
+                # print(f'Querying model: josaa{i}')
+                results = ModelClass.objects.filter(
+                        seat_type = category,
+                        academic_program = branch,
+                        gender = gender,
+                        institute_name = institute
+                    ).values('close_rank')
+                # print(f'Raw query: {results.query}')
+                # print(results)
+                results_data = list(results.values('close_rank'))
+                if len(results_data)>0 :
+                    year_data = {'year':i, 'close_rank':results_data[0]}
+                    yearly_trends.append(year_data)
+            return JsonResponse(yearly_trends, safe=False)
+        except Exception as e:
+            return HttpResponse(f'An error occurred: {e}', status=500)
 
 class TopBranchesYearWise(APIView):
     def get(self, request):
         year = request.query_params.get('year')
         ModelClass = apps.get_model('users', 'josaa' + str(year))
         try:
+            if year == '2016' or year=='2017':
+                gender = 'NA'
+            else:
+                gender = 'Gender-Neutral'
             results = ModelClass.objects.filter(
-            seat_type='OPEN', gender='Gender-Neutral'
-            ).values("academic_program").annotate(
+            seat_type='OPEN', gender=gender
+            ).annotate(
                 open_rank_int=Cast('open_rank', FloatField()),
                 close_rank_int=Cast('close_rank', FloatField())
             ).annotate(
-                avg_rank=Avg(ExpressionWrapper((F('open_rank_int') + F('close_rank_int')) / 2, output_field=FloatField()))
-            ).order_by('avg_rank')
-            results3 = results.values('academic_program')
-            results_data = list(results3)
+            avg_rank=ExpressionWrapper((F('open_rank_int') + F('close_rank_int')) / 2, output_field=FloatField())
+            ).values('academic_program').annotate(
+                avg_of_avg_rank=Avg('avg_rank'),
+                institute_count=Count('institute_name')
+            ).order_by('avg_of_avg_rank')
+            # results3 = results.values()
+            results_data = list(results)
             return JsonResponse(results_data, safe=False)
         except Exception as e:
             return HttpResponse(f'An error occurred: {e}', status=500)
