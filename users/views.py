@@ -346,13 +346,15 @@ class YearlyTrend(APIView):
                         academic_program = branch,
                         gender = gender,
                         institute_name = institute
-                    ).values('close_rank')
+                    ).values('close_rank', 'open_rank')
                 # print(f'Raw query: {results.query}')
                 # print(results)
-                results_data = list(results.values('close_rank'))
-                if len(results_data)>0 :
-                    year_data = {'year':i, 'close_rank':results_data[0]}
+                open_data = list(results.values('open_rank'))
+                close_data = list(results.values('close_rank'))
+                if len(open_data)>0 :
+                    year_data = {'year':i, 'close_rank':close_data[0], 'open_rank':open_data[0]}
                     yearly_trends.append(year_data)
+                print(yearly_trends)
             return JsonResponse(yearly_trends, safe=False)
         except Exception as e:
             return HttpResponse(f'An error occurred: {e}', status=500)
