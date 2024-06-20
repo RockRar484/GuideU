@@ -66,6 +66,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'https://guide-u-eldj.vercel.app',
 ]
 
 CORS_ALLOW_METHODS = [
