@@ -11,10 +11,10 @@ const LineChart = ({ institute, category, branch }) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/api/yearlytrend/', {
+        const response = await axios.get('https://czileen484.pythonanywhere.com/api/yearlytrend/', {
           params: {
-            institute:institute,
-            category:category,
+            institute: institute,
+            category: category,
             branch: branch,
           },
         });
@@ -75,7 +75,7 @@ const LineChart = ({ institute, category, branch }) => {
             y: {
               beginAtZero: true
             }
-          }   
+          }
         }
       });
     }

@@ -180,7 +180,7 @@ export function DataTableDemo({ year, branch, category, rank }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('http://127.0.0.1:8000/api/catavailinsti/', {
+        const response = await axios.get('https://czileen484.pythonanywhere.com/api/catavailinsti/', {
           params: {
             year: year,
             category_rank: rank,
@@ -253,7 +253,7 @@ export function DataTableDemo({ year, branch, category, rank }) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length && message==="" ? (
+            {table.getRowModel().rows?.length && message === "" ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (

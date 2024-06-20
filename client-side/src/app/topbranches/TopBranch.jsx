@@ -136,7 +136,7 @@ export function TopBranch({ year }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('http://127.0.0.1:8000/api/topbranchesyearwise/', {
+        const response = await axios.get('https://czileen484.pythonanywhere.com/api/topbranchesyearwise/', {
           params: {
             year: year,
           },
@@ -206,7 +206,7 @@ export function TopBranch({ year }) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length && message==="" ? (
+            {table.getRowModel().rows?.length && message === "" ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (

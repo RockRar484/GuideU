@@ -5,18 +5,17 @@ import cheerio from 'cheerio';
 
 const NewsView = () => {
   const [articles, setArticles] = useState([]);
-  let count=0
+  let count = 0
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        if(count===0)
-        {
-            const response = await axios.get('http://localhost:8000/api/news/');
-            setArticles(response.data.articles);
-            console.log(response.data.articles);
-            console.log(articles);
-            count++
+        if (count === 0) {
+          const response = await axios.get('https://czileen484.pythonanywhere.com/api/news/');
+          setArticles(response.data.articles);
+          console.log(response.data.articles);
+          console.log(articles);
+          count++
         }
       } catch (error) {
         console.log(error);
@@ -47,7 +46,7 @@ const NewsView = () => {
       console.log(articles)
     };
 
-    if (articles.length > 0 && count===0) {
+    if (articles.length > 0 && count === 0) {
       fetchArticleData();
       count++
     }
@@ -57,7 +56,7 @@ const NewsView = () => {
     <div className="px-20 lg:px-90 md:px-40 sm:px-20 py-20">
       <div className="max-w-7xl mx-auto my-5 sm:my-10 p-5 sm:p-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {articles.length>0 &&articles.map((article, index) => (
+          {articles.length > 0 && articles.map((article, index) => (
             <div
               key={index}
               className="relative w-full flex items-end justify-start text-left bg-cover bg-center"

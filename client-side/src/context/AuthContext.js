@@ -6,24 +6,24 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const router = useRouter();
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token =localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
   }, []);
 
-  const login = async (email,password) => {
-    try{
-        const response= await axios.post('http://localhost:8000/api/login/', { "email": email, "password":password });
-        const token = response.data.token 
-        router.push('/home');
-        localStorage.setItem('token', token);
-        setIsLoggedIn(true);
-        
-    } catch(error){
-        console.log(error.response.data);
+  const login = async (email, password) => {
+    try {
+      const response = await axios.post('https://czileen484.pythonanywhere.com/api/login/', { "email": email, "password": password });
+      const token = response.data.token
+      router.push('/home');
+      localStorage.setItem('token', token);
+      setIsLoggedIn(true);
+
+    } catch (error) {
+      console.log(error.response.data);
     }
   };
 
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     router.push('/');
     setIsLoggedIn(false);
   };
-   const getToken = () => {
+  const getToken = () => {
     const token = localStorage.getItem('token');
     return token;
   }
