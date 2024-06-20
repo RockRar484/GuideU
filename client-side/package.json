@@ -17,6 +17,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-table": "^8.17.3",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

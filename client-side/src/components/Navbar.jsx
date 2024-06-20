@@ -7,13 +7,13 @@ import { useAuth } from '@/context/AuthContext'
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react'
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 const Navbar = () => {
     const [token, setToken] = useState(null);
@@ -72,43 +72,43 @@ const Navbar = () => {
                                                 <span>News</span>
                                             </div>
                                         </li>
-                                       {isLoggedIn ? null :( <li>
+                                        {isLoggedIn ? null : (<li>
                                             <div onClick={() => router.push('/about')} className="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
                                                 <span>About Us</span>
                                             </div>
                                         </li>)}
                                     </ul>
                                 </div>
-                                { isLoggedIn ? (
+                                {isLoggedIn ? (
                                     <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                    <div onClick={() => router.push('/colleges')} className="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
-                                      <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4" />
-                                      </Button>
-                                      </div>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/about')}
-                                      >
-                                        About Us
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/analysis')}
-                                      >
-                                        Yearly Trend
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/topbranch')}
-                                      >
-                                        Top Branches
-                                      </DropdownMenuItem>
-                                      <DropdownMenuSeparator />
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                ): null}
+                                        <DropdownMenuTrigger asChild>
+                                            <div onClick={() => router.push('/colleges')} className="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
+                                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                                    <span className="sr-only">Open menu</span>
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem
+                                                onClick={() => router.push('/about')}
+                                            >
+                                                About Us
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => router.push('/analysis')}
+                                            >
+                                                Yearly Trend
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => router.push('/topbranches')}
+                                            >
+                                                Top Branches
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                ) : null}
                                 {isLoggedIn ?
                                     (
                                         <div className="w-full pl-3 space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
