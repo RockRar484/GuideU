@@ -5,9 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 const withAuth = (WrappedComponent) => {
-  return (props) => {
+  const ComponentWithAuth = (props) => {
     const router = useRouter();
-
     const { getToken } = useAuth();
 
     useEffect(() => {
@@ -15,10 +14,14 @@ const withAuth = (WrappedComponent) => {
       if (!token) {
         router.push('/');
       }
-    }, []);
+    }, [router, getToken]);
 
     return <WrappedComponent {...props} />;
   };
+
+  ComponentWithAuth.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return ComponentWithAuth;
 };
 
 export default withAuth;
