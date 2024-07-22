@@ -398,7 +398,7 @@ class TopPicksYearWise(APIView):
             ).annotate(
                 avg_rank=Avg(ExpressionWrapper((F('open_rank_int') + F('close_rank_int')) / 2, output_field=FloatField()))
             ).order_by('avg_rank')
-            results3 = results.values('academic_program', 'avg_rank', 'institute name')
+            results3 = results.values('academic_program', 'avg_rank', 'institute_name')
             results_data = list(results3)
             return JsonResponse(results_data, safe=False)
         except Exception as e:

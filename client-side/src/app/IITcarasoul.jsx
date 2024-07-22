@@ -17,7 +17,8 @@ import iitv from '@/assets/iitv.png';
 
 export function CarouselIIT() {
   return (
-    <Carousel className="w-full">
+    <div className="w-full m-3 px-7 md:px-12">
+    <Carousel>
       <CarouselContent>
         <CarouselItem key={1} className="border-0 md:basis-1/2 lg:basis-1/3">
           <div className="">
@@ -75,6 +76,7 @@ export function CarouselIIT() {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
+    </div>
   );
 }
 

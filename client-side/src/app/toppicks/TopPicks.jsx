@@ -32,123 +32,51 @@ import {
 import axios from 'axios';
 
 const columns = [
+    {
+        accessorKey: 'institute_name',
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Institute Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ),
+        cell: ({ row }) => <div>{row.getValue('institute_name')}</div>,
+      },
+  
   {
-    accessorKey: 'round_no',
+    accessorKey: 'academic_program',
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Round No
+        Acdemic Program
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="text-right font-medium">{parseInt(row.getValue('round_no'))}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue('academic_program')}</div>,
   },
   {
-    accessorKey: 'institute_name',
+    accessorKey: 'avg_rank',
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Institute Name
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue('institute_name')}</div>,
-  },
-  {
-    accessorKey: 'institute_type',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Institute Type
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue('institute_type')}</div>,
-  },
-  {
-    accessorKey: 'open_rank',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Open Rank
+        Average Rank
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="text-right font-medium">{parseInt(row.getValue('open_rank'))}</div>
+      <div className="text-right font-medium">{parseInt(row.getValue('avg_rank'))}</div>
     ),
-  },
-  {
-    accessorKey: 'close_rank',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Close Rank
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <div className="text-right font-medium">{parseInt(row.getValue('close_rank'))}</div>
-    ),
-  },
-  {
-    accessorKey: 'seat_type',
-    header: () => <Button variant="ghost">Seat Type</Button>,
-    cell: ({ row }) => (
-      <div className="text-right font-medium">{row.getValue('seat_type')}</div>
-    ),
-  },
-  {
-    accessorKey: 'gender',
-    header: () => <Button variant="ghost">Gender</Button>,
-    cell: ({ row }) => (
-      <div className="text-right font-medium">{row.getValue('gender')}</div>
-    ),
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.institute_name)}
-            >
-              Copy Institute Name
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Add Favourites</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
   },
 ];
 
-export function DataTableDemo({ year, branch, category, rank }) {
+export function TopPicks({ year }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -180,12 +108,9 @@ export function DataTableDemo({ year, branch, category, rank }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('https://czileen484.pythonanywhere.com/api/catavailinsti/', {
+        const response = await axios.get('http://127.0.0.1:8000/api/toppicks/', {
           params: {
             year: year,
-            category_rank: rank,
-            branch: branch,
-            category: category,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -195,24 +120,22 @@ export function DataTableDemo({ year, branch, category, rank }) {
         setData(response.data);
         setMessage('')
       } catch (error) {
-        if (error.response.data.message) {
         console.log(error.response.data.message);
         setMessage(error.response.data.message);
-        }
       }
     };
 
     handleGetData();
-  }, [year, branch, category, rank]);
+  }, [year]);
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter institute..."
-          value={table.getColumn('institute_name')?.getFilterValue() ?? ''}
+          placeholder="Filter Program..."
+          value={table.getColumn('academic_program')?.getFilterValue() ?? ''}
           onChange={(event) =>
-            table.getColumn('institute_name')?.setFilterValue(event.target.value)
+            table.getColumn('academic_program')?.setFilterValue(event.target.value)
           }
           className="max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm"
         />
@@ -268,7 +191,7 @@ export function DataTableDemo({ year, branch, category, rank }) {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results. {message}
+                  No results.
                 </TableCell>
               </TableRow>
             )

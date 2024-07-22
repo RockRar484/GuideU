@@ -79,42 +79,33 @@ const Navbar = () => {
                                                 <span>About Us</span>
                                             </div>
                                         </li>)}
+                                        {isLoggedIn ? (
+                                            <li>
+                                                <div onClick={() => router.push('/analysis')} className="block md:px-4 transition hover:cursor-pointer hover:text-primary dark:hover:text-primaryLight">
+                                                    <span>Yearly Trend</span>
+                                                </div>
+                                            </li>
+                                        ) : null}
+                                        {isLoggedIn ? (
+                                            <li>
+                                                <div onClick={() => router.push('/topbranches')} className="block md:px-4 transition hover:cursor-pointer hover:text-primary dark:hover:text-primaryLight">
+                                                    <span>Top Branches</span>
+                                                </div>
+                                            </li>
+                                        ) : null}
+                                        {isLoggedIn ? (
+                                            <li>
+                                                <div onClick={() => router.push('/toppicks')} className="block md:px-4 transition hover:cursor-pointer hover:text-primary dark:hover:text-primaryLight">
+                                                    <span>Top Picks</span>
+                                                </div>
+                                            </li>
+                                        ) : null}
                                     </ul>
                                 </div>
-                                { isLoggedIn ? (
-                                    <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                    <div onClick={() => router.push('/colleges')} className="block md:px-4 transition hover:text-primary dark:hover:text-primaryLight">
-                                      <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4" />
-                                      </Button>
-                                      </div>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/about')}
-                                      >
-                                        About Us
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/analysis')}
-                                      >
-                                        Yearly Trend
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => router.push('/topbranches')}
-                                      >
-                                        Top Branches   
-                                      </DropdownMenuItem>
-                                      <DropdownMenuSeparator />
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                ): null}
                                 {isLoggedIn ?
                                     (
-                                        <div className="w-full pl-3 space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
-                                            <button onClick={handleLogOut} className="relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
+                                        <div className=" pl-3 space-y-2 border-primary/10 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
+                                            <button onClick={handleLogOut} className=" w-full relative flex h-9 ml-auto items-center justify-center sm:px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary dark:before:bg-primaryLight before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
                                                 <span className="relative text-sm font-semibold text-white dark:text-gray-900">Logout</span>
                                             </button>
                                         </div>
