@@ -108,7 +108,7 @@ export function TopPicks({ year }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('http://127.0.0.1:8000/api/toppicks/', {
+        const response = await axios.get('https://czileen484.pythonanywhere.com/api/toppicks/', {
           params: {
             year: year,
           },
