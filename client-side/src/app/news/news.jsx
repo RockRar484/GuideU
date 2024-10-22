@@ -11,7 +11,7 @@ const NewsView = () => {
     const fetchArticles = async () => {
       try {
         if (count === 0) {
-          const response = await axios.get('https://czileen484.pythonanywhere.com/api/news/');
+          const response = await axios.get('https://deploy-guide-u.vercel.app/api/news/');
           setArticles(response.data.articles);
           console.log(response.data.articles);
           console.log(articles);

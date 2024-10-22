@@ -109,7 +109,7 @@ export function TopBranch({ year }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('https://czileen484.pythonanywhere.com/api/topbranchesyearwise/', {
+        const response = await axios.get('https://deploy-guide-u.vercel.app/api/topbranchesyearwise/', {
           params: {
             year: year,
           },

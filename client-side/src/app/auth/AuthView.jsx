@@ -39,7 +39,7 @@ const AuthView = ({mode}) => {
     const handleSignUp = async (e) => {
         if(confirmPassword === Password){
             try {
-                const response = await axios.post('https://czileen484.pythonanywhere.com/api/signup/', {
+                const response = await axios.post('https://deploy-guide-u.vercel.app/api/signup/', {
                     email: email,
                     password: Password
                 })

@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email,password) => {
     try{
-        const response= await axios.post('https://czileen484.pythonanywhere.com/api/login/', { "email": email, "password":password });
+        const response= await axios.post('https://deploy-guide-u.vercel.app/api/login/', { "email": email, "password":password });
         const token = response.data.token 
         router.push('/colleges');
         localStorage.setItem('token', token);

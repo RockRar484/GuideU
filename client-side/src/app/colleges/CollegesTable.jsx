@@ -180,7 +180,7 @@ export function DataTableDemo({ year, branch, category, rank }) {
           throw new Error('No token found in localStorage');
         }
 
-        const response = await axios.get('https://czileen484.pythonanywhere.com/api/catavailinsti/', {
+        const response = await axios.get('https://deploy-guide-u.vercel.app/api/catavailinsti/', {
           params: {
             year: year,
             category_rank: rank,

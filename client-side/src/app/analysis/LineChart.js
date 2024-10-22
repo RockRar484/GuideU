@@ -11,7 +11,7 @@ const LineChart = ({ institute, category, branch }) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://czileen484.pythonanywhere.com/api/yearlytrend/', {
+        const response = await axios.get('https://deploy-guide-u.vercel.app/api/yearlytrend/', {
           params: {
             institute: institute,
             category: category,
